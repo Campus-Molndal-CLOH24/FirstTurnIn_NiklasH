@@ -5,8 +5,6 @@ namespace CLO24_FirstTurnInNiklasH
     {
         static void Main(string[] args)
         {
-            // since we don't use a database: we will not use sessions. Instead we start off with bool:false (guest) and change to true (admin) if the user inputs the correct password
-            // on shutdown the program will reset the bool to false
             ShopLogin();
 
             ShopEnd();
@@ -15,7 +13,10 @@ namespace CLO24_FirstTurnInNiklasH
         private static void ShopLogin()
         {
             int loginChoice;
-            bool validLoginChoice = false;
+            bool validLoginChoice = false;  // initial value is false so we can loop until the user inputs a valid choice in the login menu
+                                            // if we were using a database we would use sessions instead of a bool above
+            bool adminRights = false;       // initial value is false, the user is a guest, admin will be true if the user inputs the correct password
+                                            // on shutdown the program will reset the bool to false since we initalize it here
 
             while (!validLoginChoice)
             {
@@ -32,6 +33,31 @@ namespace CLO24_FirstTurnInNiklasH
                 if (int.TryParse(loginInput, out loginChoice) && (loginChoice == 1 || loginChoice == 2 || loginChoice == 3 ))
                 {
                     validLoginChoice = true; // if user choise matches the menu, we can exit the loop
+
+                    if (loginChoice == 1)
+                    {
+                        adminRights = false;
+                    }
+                    else if (loginChoice == 2)
+                    {
+                        Console.WriteLine("Please enter the Admin password:");
+                        Console.WriteLine("To testrun this program, adminpass is: Skywalker");
+                        string? passwordInput = Console.ReadLine();
+
+                        if (passwordInput == "Skywalker")
+                        {
+                            adminRights = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid password. Logging in as Guest.");
+                            adminRights = false;
+                        }
+                    }
+                    else if (loginChoice == 3)
+                    {
+                        ShopEnd();
+                    }
                 }
                 else
                 {
@@ -39,10 +65,10 @@ namespace CLO24_FirstTurnInNiklasH
                 }
             }
 
-            ShopMenu();
+            ShopMenu(adminRights);
         }
 
-        private static void ShopMenu()
+        private static void ShopMenu(bool adminRights)
         {
             // here we will have a menu mechanic in place to navigate the user through the program
             // vital 1: admin can add, remove, search and list CDs
