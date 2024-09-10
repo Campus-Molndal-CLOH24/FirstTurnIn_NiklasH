@@ -7,9 +7,39 @@ namespace CLO24_FirstTurnInNiklasH
         {
             // since we don't use a database: we will not use sessions. Instead we start off with bool:false (guest) and change to true (admin) if the user inputs the correct password
             // on shutdown the program will reset the bool to false
-            ShopMenu();
+            ShopLogin();
 
             ShopEnd();
+        }
+
+        private static void ShopLogin()
+        {
+            int loginChoice;
+            bool validLoginChoice = false;
+
+            while (!validLoginChoice)
+            {
+                Console.WriteLine("Welcome to the Enthusiasts CD shop!");
+                Console.WriteLine("Are you a Guest or Administrator? To access the Admin-menu you will need to enter a password:");
+                Console.WriteLine("");
+                Console.WriteLine("1. Log in as Guest");
+                Console.WriteLine("2. Log in as Administrator");
+                Console.WriteLine("3. Exit the program");
+
+                string? loginInput = Console.ReadLine(); // receive user menu choice
+
+                // below: we chose TryParse instead of Int32 to avoid exceptions, making it safer for user input - and null is simply "false", easy to handle
+                if (int.TryParse(loginInput, out loginChoice) && (loginChoice == 1 || loginChoice == 2 || loginChoice == 3 ))
+                {
+                    validLoginChoice = true; // if user choise matches the menu, we can exit the loop
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter 1, 2 or 3.");
+                }
+            }
+
+            ShopMenu();
         }
 
         private static void ShopMenu()
