@@ -14,7 +14,8 @@ namespace CLO24_FirstTurnInNiklasH
         {
             int loginChoice;
             bool validLoginChoice = false;  // initial value is false so we can loop until the user inputs a valid choice in the login menu
-                                            // if we were using a database we would use sessions instead of a bool above
+                                            // if we were using a database we would use sessions instead of a bool above, but we make it simple now
+
             bool adminRights = false;       // initial value is false, the user is a guest, admin will be true if the user inputs the correct password
                                             // on shutdown the program will reset the bool to false since we initalize it here
 
@@ -22,8 +23,7 @@ namespace CLO24_FirstTurnInNiklasH
             {
                 Console.WriteLine("Welcome to the Enthusiasts CD shop!");
                 Console.WriteLine("Are you a Guest or Administrator? To access the Admin-menu you will need to enter a password:");
-                Console.WriteLine("");
-                Console.WriteLine("1. Log in as Guest");
+                Console.WriteLine("\n1. Log in as Guest"); // \n is a newline character, saves us a row of code
                 Console.WriteLine("2. Log in as Administrator");
                 Console.WriteLine("3. Exit the program");
 
@@ -36,9 +36,9 @@ namespace CLO24_FirstTurnInNiklasH
 
                     if (loginChoice == 1)
                     {
-                        adminRights = false;
+                        adminRights = false; // 1 is guest login, no admin rights
                     }
-                    else if (loginChoice == 2)
+                    else if (loginChoice == 2) // 2 is admin login, run an admin rights check below
                     {
                         Console.WriteLine("Please enter the Admin password:");
                         Console.WriteLine("To testrun this program, adminpass is: Skywalker");
@@ -46,30 +46,44 @@ namespace CLO24_FirstTurnInNiklasH
 
                         if (passwordInput == "Skywalker")
                         {
-                            adminRights = true;
+                            adminRights = true; // if adminpass is rightpass, the user gets admin rights
                         }
                         else
                         {
-                            Console.WriteLine("Invalid password. Logging in as Guest.");
+                            Console.WriteLine("Invalid password. Logging in as Guest."); // if failed adminpass, default to guest login
                             adminRights = false;
                         }
                     }
-                    else if (loginChoice == 3)
+                    else if (loginChoice == 3) // 3 is exit, run the ShopEnd method
                     {
                         ShopEnd();
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input. Please enter 1, 2 or 3.");
+                    Console.WriteLine("Invalid input. Please enter 1, 2 or 3."); // if user input is not 1, 2 or 3, we loop back to the ShopLogin menu
                 }
             }
 
-            ShopMenu(adminRights);
+            ShopMenu(adminRights); // adminRights value is passed to the ShopMenu method
         }
 
         private static void ShopMenu(bool adminRights)
         {
+            while (true) // loop through the menu until the user chose to exit out of it
+            {
+                Console.WriteLine("\nMain Menu");
+                Console.WriteLine("1. Search for a CD");
+                Console.WriteLine("2. List all CDs");
+                Console.WriteLine("3. Exit the program");
+
+                if (adminRights) // below options is only visible if adminRights is true! == user passed the admin login
+                {
+                    Console.WriteLine("4. Add a CD");
+                    Console.WriteLine("5. Remove a CD");
+                }
+            }
+
             // here we will have a menu mechanic in place to navigate the user through the program
             // vital 1: admin can add, remove, search and list CDs
             // vital 2: guest can only search and list CDs
@@ -78,12 +92,35 @@ namespace CLO24_FirstTurnInNiklasH
 
         private static void ShopEnd()
         {
-            // here we will have a method to reset the bool to false (unless we initialize the program with a bool:false? before the menu is run)
-            Console.WriteLine("");
-            Console.WriteLine("Thanks for visiting the shop! Welcome back anytime");
-            Console.WriteLine("Please press any key:");
-            Console.ReadKey();
-            Environment.Exit(0);
+            while (true)
+            {
+                Console.WriteLine("\nAre you sure you want to log out?");
+                Console.WriteLine("1. = Log out");
+                Console.WriteLine("2. = Return to the login-menu");
+
+                string? logoutInput = Console.ReadLine();
+
+                if (int.TryParse(logoutInput, out int logoutChoice))
+                {
+                    switch (logoutChoice)
+                    {
+                        case 1:
+                        Console.WriteLine("Thanks for visiting the shop! Welcome back anytime");
+                        Console.WriteLine("Please press any key:");
+                        Console.ReadKey();
+                        Environment.Exit(0); // shut down the program
+                            break;
+                        case 2:
+                        Console.WriteLine("\nHeading back to the login-menu. Press any key:");
+                        Console.ReadKey();
+                        ShopLogin();
+                            return;
+                        default:
+                        Console.WriteLine("Invalid choice. Press 1 or 2, please."); // Invalid input, loop back to the ShopEnd menu
+                            break;
+                    }
+                }
+            }
         }
     }
 }
