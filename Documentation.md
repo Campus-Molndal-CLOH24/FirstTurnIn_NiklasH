@@ -51,6 +51,8 @@ This entire concept has a few benefits:
 - Updated this file with the adminRight section  
 - Basic code for the ShopMenu()-method  
 - Added the ShopEnd()-code  
+- ShopMenu() completed, just need to be updated with the links to CD-methods when they are added  
 -  
+  
 
 
