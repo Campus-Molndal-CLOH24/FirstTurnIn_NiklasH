@@ -25,7 +25,7 @@ b2) CDcollection
 - searchCD  
 - addCD  
 - removeCD 
-- CDhandling: Since we are not creating a real database, I will simulate this by using a List-function (as we will want to add/remove/etc). THIS IS VITAL SO WE KEEP THE INFORMATION INTACT WHEN THE PROGRAM IS SHUT DOWN!  
+- CDhandling: Since we are not creating a real database, I will simulate this by using a List-function (as we will want to add/remove/etc). This is vital so we keep the information intact when the program is shut down!  
 b3) User  
 - admin (search, add, remove tools)  
 - guest (search tool only)  
