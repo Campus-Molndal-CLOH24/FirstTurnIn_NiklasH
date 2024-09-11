@@ -42,7 +42,7 @@ This entire concept has a few benefits:
 - It needs no connection to a database or server, session control is a natural concept for databases but not here  
 - Scalable: We can add more tools for admins without cluttering ShopMenu() with guest options!  
   
-# Development / version history:  
+# Development phase one / version history:  
 - Initial commit  
 - Created CollectionOfCDs + User classes  
 - Created Methods  
@@ -52,7 +52,15 @@ This entire concept has a few benefits:
 - Basic code for the ShopMenu()-method  
 - Added the ShopEnd()-code  
 - ShopMenu() completed, just need to be updated with the links to CD-methods when they are added  
+
+# Next phase intro: Working the CollectionofCDs class:  
+- Create a List where we can store the CDs  
+Two points: I chose between creating this as a .txt, which would be easy to implement but is harder to structure (we would need to create comma-separated values), or to create this as a .json file. That would be easier to read/write data to - so I chose cdcollection.json  
+- I also decided to expand the class to include year of release and genre, as we want to search the class it seems like a good idea to have eras and genres!  
+- Here I want to note that to see the files in Virtual Studio we have to shift+alt+a "add existing item" to see the documentation.md + cdcollection.json in solution explorer  
+
+# Development phase two / version history:
+- Added the List<CD>, the relative file path and  
+- ..also CollectionOfCDs-constructor, the primary role is to load LoadCDCollection which is a method constructed to assist with handling loading the List (so we don't re-use code in the search/add/etc methods)  
+- Added SaveCDCollection() to handle writing to file  
 -  
-  
-
-

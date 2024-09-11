@@ -88,7 +88,7 @@ namespace CLO24_FirstTurnInNiklasH
                     switch (menuChoice) // switch-case is a very easy way of maintaining menu choices; if no case, it uses default!
                     {
                         case 1:
-                            // Call search method
+                            CollectionOfCDs.SearchCD(); // Call search method
                             break;
                         case 2:
                             // Call list method
