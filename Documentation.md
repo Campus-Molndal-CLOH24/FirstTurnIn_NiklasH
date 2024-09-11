@@ -70,4 +70,8 @@ Two points: I chose between creating this as a .txt, which would be easy to impl
 - Created the CD class with getters and setters  
 - Added RemoveCD()  
 - Created the ShopControl()-class and moved all control methods there  
--  
+
+# Issues resolved  
+-  One major issue I had before is that a file path might be correct (in the program folder) but the program will still not find it. This happened this time again, with cdcollection.json. The solution is reasonable easy, if you had experienced this before, but I had to ask ChatGPT for guidance the first time. This is the solution: rightclick the file you cannot find (cdcollection.json in this case). Chose properties. Then on Copy to Output directory, chose "Copy always"!  
+  
+   

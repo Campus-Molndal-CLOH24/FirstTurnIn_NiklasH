@@ -132,7 +132,7 @@ namespace CLO24_FirstTurnInNiklasH
                     {
                         case 1: // If input was 1
                             Console.WriteLine("\nThanks for visiting the shop! Welcome back anytime");
-                            Console.WriteLine("Please press any key:");
+                            Console.WriteLine("Please press any key");
                             Console.ReadKey();
                             Environment.Exit(0); // Shut down the program
                             break;
