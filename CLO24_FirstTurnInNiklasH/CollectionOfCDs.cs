@@ -38,12 +38,15 @@ namespace CLO24_FirstTurnInNiklasH
 
         private static void SaveCDCollection() // Method to save the CD collection to file, this is so we don't have to re-use code when adding/removing etc
         {
-            string? json = JsonConvert.SerializeObject(cdCollection, Formatting.Indented); // Serialize the list of CDs into JSON and indent it for readability. Needed json-package!
+            string? json = JsonConvert.SerializeObject(cdCollection, Newtonsoft.Json.Formatting.Indented); // Serialize the list of CDs into JSON and indent it for readability. Needed json-package!
             File.WriteAllText(filePath, json);
         }
 
-        private static void SearchCD() // Method to search for a CD in the collection
+        internal static void SearchCD() // Method to search for a CD in the collection
         {
+            // TO DO: IMPORTANT!
+            // MAKE SURE WE SORT THE SEARCH RESULT ALPHABETICALLY! (use OrderBy?)
+
             Console.WriteLine("\nEnter CD title, artist or genre to search:");
             string? searchTerm = Console.ReadLine()?.ToLower(); // Read the search term from the user and convert it to lowercase
 
@@ -59,7 +62,7 @@ namespace CLO24_FirstTurnInNiklasH
             }
         }
 
-        private static void ListCD() // Method to list all CDs in the collection
+        internal static void ListCD() // Method to list all CDs in the collection
         {
             Console.WriteLine("Current CD Collection:");
             foreach (var cd in cdCollection) // Loop through the collection and print each CD
@@ -68,7 +71,7 @@ namespace CLO24_FirstTurnInNiklasH
             }
         }
 
-        private static void AddCD() // Method to add a CD to the collection
+        internal static void AddCD() // Method to add a CD to the collection
         {
             // TO DO: IMPORTANT!
             // Add a check to see if the CD already exists in the collection, if it does, increase the quantity instead of adding a new CD
@@ -98,7 +101,7 @@ namespace CLO24_FirstTurnInNiklasH
             }
         }
 
-        private static void RemoveCD()
+        internal static void RemoveCD()
         {
             Console.WriteLine("Enter CD title or artist to remove:");
             // We will only accept title or artist as input, as we don't want to remove multiple CDs at once. By default we remove the first CD found.
@@ -120,13 +123,12 @@ namespace CLO24_FirstTurnInNiklasH
         }
     }
 
-    internal record CD(string Title, string Artist, string Genre, int Year, int Quantity = 1); // Record for CD, with a default quantity of 1
-
     internal class CD
     {
         public string? Title { get; set; }
         public string? Artist { get; set; }
         public string? Genre { get; set; }
         public int Year { get; set; }
+        public int Quantity { get; set; }
     }
 }

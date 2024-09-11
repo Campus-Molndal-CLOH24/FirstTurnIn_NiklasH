@@ -69,4 +69,5 @@ Two points: I chose between creating this as a .txt, which would be easy to impl
 - Added AddCD() - it needs to go back to, to make validation checks  
 - Created the CD class with getters and setters  
 - Added RemoveCD()  
-  
+- Created the ShopControl()-class and moved all control methods there  
+-  
