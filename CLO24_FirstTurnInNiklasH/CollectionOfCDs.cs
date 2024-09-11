@@ -27,7 +27,7 @@ namespace CLO24_FirstTurnInNiklasH
         {
             if (File.Exists(filePath)) // If the file exists, we read the JSON and deserialize it into a list of CDs
             {
-                string json = File.ReadAllText(filePath);
+                string? json = File.ReadAllText(filePath);
                 cdCollection = JsonConvert.DeserializeObject<List<CD>>(json);
             }
             else
@@ -38,18 +38,20 @@ namespace CLO24_FirstTurnInNiklasH
 
         private static void SaveCDCollection() // Method to save the CD collection to file, this is so we don't have to re-use code when adding/removing etc
         {
-            string json = JsonConvert.SerializeObject(cdCollection, Formatting.Indented); // Serialize the list of CDs into JSON and indent it for readability. Needed json-package!
+            string? json = JsonConvert.SerializeObject(cdCollection, Formatting.Indented); // Serialize the list of CDs into JSON and indent it for readability. Needed json-package!
             File.WriteAllText(filePath, json);
         }
 
         private static void SearchCD() // Method to search for a CD in the collection
         {
             Console.WriteLine("\nEnter CD title, artist or genre to search:");
-            string searchTerm = Console.ReadLine()?.ToLower(); // Read the search term from the user and convert it to lowercase
+            string? searchTerm = Console.ReadLine()?.ToLower(); // Read the search term from the user and convert it to lowercase
 
             foreach (var cd in cdCollection) // Loop through all CDs in the collection
             {
                 if (cd.Title.ToLower().Contains(searchTerm) || cd.Artist.ToLower().Contains(searchTerm) || cd.Genre.ToLower().Contains(searchTerm)) // if searchTerm is met, print the CD
+                // Consider CompareString (separate method, neater and re-use of code) instead of ToLower (could be sensitive for some languages)
+                // TO DO: It could return more than one title, if our searchTerm for example is brief like "net" and we have "internet" and ".NET"! Fix!
                 {
                     Console.WriteLine($"{cd.Title} by {cd.Artist}, in the {cd.Genre} released in {cd.Year}.");
                     Console.WriteLine($"We have {cd.Quantity} copies of that CD in the store right now.");
@@ -117,7 +119,9 @@ namespace CLO24_FirstTurnInNiklasH
             }
         }
     }
-    
+
+    internal record CD(string Title, string Artist, string Genre, int Year, int Quantity = 1); // Record for CD, with a default quantity of 1
+
     internal class CD
     {
         public string? Title { get; set; }
