@@ -67,4 +67,6 @@ Two points: I chose between creating this as a .txt, which would be easy to impl
 - Added SearchCD()  
 - Added ListCD()  
 - Added AddCD() - it needs to go back to, to make validation checks  
--  
+- Created the CD class with getters and setters  
+- Added RemoveCD()  
+  

@@ -42,7 +42,7 @@ namespace CLO24_FirstTurnInNiklasH
             File.WriteAllText(filePath, json);
         }
 
-        private static void SearchCD()
+        private static void SearchCD() // Method to search for a CD in the collection
         {
             Console.WriteLine("\nEnter CD title, artist or genre to search:");
             string searchTerm = Console.ReadLine()?.ToLower(); // Read the search term from the user and convert it to lowercase
@@ -57,7 +57,7 @@ namespace CLO24_FirstTurnInNiklasH
             }
         }
 
-    private static void ListCD()
+        private static void ListCD() // Method to list all CDs in the collection
         {
             Console.WriteLine("Current CD Collection:");
             foreach (var cd in cdCollection) // Loop through the collection and print each CD
@@ -66,7 +66,7 @@ namespace CLO24_FirstTurnInNiklasH
             }
         }
 
-        private static void AddCD()
+        private static void AddCD() // Method to add a CD to the collection
         {
             // TO DO: IMPORTANT!
             // Add a check to see if the CD already exists in the collection, if it does, increase the quantity instead of adding a new CD
@@ -84,8 +84,9 @@ namespace CLO24_FirstTurnInNiklasH
             Console.WriteLine("Enter the release year:");
             if (int.TryParse(Console.ReadLine(), out int year))
             {
+                // We take the input from above, then add it to the cdCollection list, then use SaveCDCollection to save it to file
                 cdCollection.Add(new CD { Title = title, Artist = artist, Genre = genre, Year = year });
-                SaveCDCollection(); // after adding the above, we save the collection to file
+                SaveCDCollection();
                 Console.WriteLine("CD added successfully!");
             }
             else
@@ -95,12 +96,33 @@ namespace CLO24_FirstTurnInNiklasH
             }
         }
 
-        }
         private static void RemoveCD()
         {
-            // method to remove a cd from the collection (list)
-        }
+            Console.WriteLine("Enter CD title or artist to remove:");
+            // We will only accept title or artist as input, as we don't want to remove multiple CDs at once. By default we remove the first CD found.
+            string? searchTerm = Console.ReadLine()?.ToLower();
 
-        // do we need a seprate method to access the list? so we don't re-use code when adding/removing?
+            var cdToRemove = cdCollection.Find(cd => cd.Title.ToLower().Contains(searchTerm) || cd.Artist.ToLower().Contains(searchTerm));
+            // Find the first CD in the collection where the title or artist contains the search term, add it to the cdToRemove variable
+
+            if (cdToRemove != null) // If we found a CD to remove (if cdToRemove is not null)
+            {
+                cdCollection.Remove(cdToRemove); // Remove the CD from the collection variable
+                SaveCDCollection(); // use the SaveCDCollection method to save the changes to file
+                Console.WriteLine("CD removed succesfully!");
+            }
+            else
+            {
+                Console.WriteLine("CD not found.");
+            }
+        }
+    }
+    
+    internal class CD
+    {
+        public string? Title { get; set; }
+        public string? Artist { get; set; }
+        public string? Genre { get; set; }
+        public int Year { get; set; }
     }
 }
