@@ -63,4 +63,8 @@ Two points: I chose between creating this as a .txt, which would be easy to impl
 - Added the List<CD>, the relative file path and  
 - ..also CollectionOfCDs-constructor, the primary role is to load LoadCDCollection which is a method constructed to assist with handling loading the List (so we don't re-use code in the search/add/etc methods)  
 - Added SaveCDCollection() to handle writing to file  
+- Added NuGet Package: Newtonsoft.Json (required for Json serialization, which we want when we are loading/saving the Json file)  
+- Added SearchCD()  
+- Added ListCD()  
+-  
 -  

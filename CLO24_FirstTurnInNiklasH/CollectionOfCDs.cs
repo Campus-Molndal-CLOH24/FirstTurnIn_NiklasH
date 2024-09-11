@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml;
+using System.IO; // for file handling
+using Newtonsoft.Json; // needed for JSON serialization (Project -> Manage NuGet Packages -> Add Newtonsoft.Json)
 
 namespace CLO24_FirstTurnInNiklasH
 {
@@ -42,11 +44,27 @@ namespace CLO24_FirstTurnInNiklasH
 
         private static void SearchCD()
         {
-            // method to search for a CD in the collection
+            Console.WriteLine("\nEnter CD title, artist or genre to search:");
+            string searchTerm = Console.ReadLine()?.ToLower(); // Read the search term from the user and convert it to lowercase
+
+            foreach (var cd in cdCollection) // Loop through all CDs in the collection
+            {
+                if (cd.Title.ToLower().Contains(searchTerm) || cd.Artist.ToLower().Contains(searchTerm) || cd.Genre.ToLower().Contains(searchTerm))
+                {
+                    Console.WriteLine($"{cd.Title} by {cd.Artist}, in the {cd.Genre} released in {cd.Year}.");
+                    Console.WriteLine($"We have {cd.Quantity} copies of that CD in the store right now.");
+                    // If the search term is found in the title, artist or genre, print the CD
+                }
+            }
         }
-        private static void ListCD()
+
+    private static void ListCD()
         {
-            // method to list all CDs in the collection
+            Console.WriteLine("Current CD Collection:");
+            foreach (var cd in cdCollection)
+            {
+                Console.WriteLine($"Title: {cd.Title}, Artist: {cd.Artist}, Release year: {cd.Year}, Genre: {cd.Genre}, Quantities: {cd.Quantity}.");
+            }
         }
 
         private static void AddCD()
