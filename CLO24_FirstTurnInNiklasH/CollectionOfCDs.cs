@@ -38,7 +38,7 @@ namespace CLO24_FirstTurnInNiklasH
 
         private static void SaveCDCollection() // Method to save the CD collection to file, this is so we don't have to re-use code when adding/removing etc
         {
-            string json = JsonConvert.SerializeObject(cdCollection, Formatting.Indented); // Serialize the list of CDs into JSON and indent it for readability
+            string json = JsonConvert.SerializeObject(cdCollection, Formatting.Indented); // Serialize the list of CDs into JSON and indent it for readability. Needed json-package!
             File.WriteAllText(filePath, json);
         }
 
@@ -49,11 +49,10 @@ namespace CLO24_FirstTurnInNiklasH
 
             foreach (var cd in cdCollection) // Loop through all CDs in the collection
             {
-                if (cd.Title.ToLower().Contains(searchTerm) || cd.Artist.ToLower().Contains(searchTerm) || cd.Genre.ToLower().Contains(searchTerm))
+                if (cd.Title.ToLower().Contains(searchTerm) || cd.Artist.ToLower().Contains(searchTerm) || cd.Genre.ToLower().Contains(searchTerm)) // if searchTerm is met, print the CD
                 {
                     Console.WriteLine($"{cd.Title} by {cd.Artist}, in the {cd.Genre} released in {cd.Year}.");
                     Console.WriteLine($"We have {cd.Quantity} copies of that CD in the store right now.");
-                    // If the search term is found in the title, artist or genre, print the CD
                 }
             }
         }
@@ -61,7 +60,7 @@ namespace CLO24_FirstTurnInNiklasH
     private static void ListCD()
         {
             Console.WriteLine("Current CD Collection:");
-            foreach (var cd in cdCollection)
+            foreach (var cd in cdCollection) // Loop through the collection and print each CD
             {
                 Console.WriteLine($"Title: {cd.Title}, Artist: {cd.Artist}, Release year: {cd.Year}, Genre: {cd.Genre}, Quantities: {cd.Quantity}.");
             }
@@ -69,7 +68,33 @@ namespace CLO24_FirstTurnInNiklasH
 
         private static void AddCD()
         {
-            // method to add a cd to the collection (list)
+            // TO DO: IMPORTANT!
+            // Add a check to see if the CD already exists in the collection, if it does, increase the quantity instead of adding a new CD
+            // Add a validation check to make sure the input is valid! (year, quantity etc)
+
+            Console.WriteLine("Enter CD title:");
+            string? title = Console.ReadLine();
+
+            Console.WriteLine("Enter the artist:");
+            string? artist = Console.ReadLine();
+
+            Console.WriteLine("Enter the genre:");
+            string? genre = Console.ReadLine();
+
+            Console.WriteLine("Enter the release year:");
+            if (int.TryParse(Console.ReadLine(), out int year))
+            {
+                cdCollection.Add(new CD { Title = title, Artist = artist, Genre = genre, Year = year });
+                SaveCDCollection(); // after adding the above, we save the collection to file
+                Console.WriteLine("CD added successfully!");
+            }
+            else
+            {
+                Console.WriteLine("Invalid year entered.");
+                // TO DO: This needs to be expanded. We should probably loop back to the start of the method if the input is invalid.
+            }
+        }
+
         }
         private static void RemoveCD()
         {

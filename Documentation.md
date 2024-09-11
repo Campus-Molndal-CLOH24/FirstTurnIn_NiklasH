@@ -66,5 +66,5 @@ Two points: I chose between creating this as a .txt, which would be easy to impl
 - Added NuGet Package: Newtonsoft.Json (required for Json serialization, which we want when we are loading/saving the Json file)  
 - Added SearchCD()  
 - Added ListCD()  
--  
+- Added AddCD() - it needs to go back to, to make validation checks  
 -  
