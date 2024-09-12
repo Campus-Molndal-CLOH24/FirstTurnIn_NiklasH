@@ -100,6 +100,7 @@ This (having a bool setting for admin/guest control) entire concept has a few be
 - Adjusted the AddCD() method to loop back in case the user input is invalid. One do-while loop handles the three string inputs, then the int input is validated in a separated while-loop afterwards.  
 - Corrected three null reference warnings (CS8604) that arose when I adjusted the SearchCD method. I was using a null-conditional operator (single ?), but the solution was to adjust the code to a null-coalescing operator (double ??). 
 - Deployed a similar LINQ-function to the ListCD()-method as we had on SearchCD. Listing them alphabetically there as well.  
+- Added the NuGet package ConsoleTables. It prints a nice frame around the List-table.  
 - Completed the code for the release-version.  
   
 # Potential issues and solutions
@@ -119,7 +120,6 @@ Potential "future upgrades":
 - Consider changing .ToLower to better handle international characters  
 - Consider Genre and the various solutions.  
 - Class: User - add this and create user logins + a list to handle them. This is very, very, very far down the work list so it is considered a bonus or future update  
-- Bonus: Formatting the print/listed CD result so it looks more appealing to the eye. A lead would be this nu-get package: https://www.nuget.org/packages/ConsoleTables  
   
 ## Attachments and references
 1) UML-class diagram below:  

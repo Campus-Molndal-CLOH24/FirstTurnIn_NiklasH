@@ -1,0 +1,37 @@
+[
+  {
+    "Title": "The Dark Side of the Moon",
+    "Artist": "Pink Floyd",
+    "Genre": "Progressive rock",
+    "Year": 1973,
+    "Quantity": 2
+  },
+  {
+    "Title": "The Wall",
+    "Artist": "Pink Floyd",
+    "Genre": "Progressive rock",
+    "Year": 1979,
+    "Quantity": 3
+  },
+  {
+    "Title": "The Division Bell",
+    "Artist": "Pink Floyd",
+    "Genre": "Progressive rock",
+    "Year": 1994,
+    "Quantity": 1
+  },
+  {
+    "Title": "Aktion",
+    "Artist": "KSMB",
+    "Genre": "Punk",
+    "Year": 1980,
+    "Quantity": 1
+  },
+  {
+    "Title": "Kärlek eller ingenting",
+    "Artist": "Pink Champagne",
+    "Genre": "Punk",
+    "Year": 1983,
+    "Quantity": 1
+  }
+]

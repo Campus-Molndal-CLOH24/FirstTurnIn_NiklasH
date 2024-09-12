@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json; // needed for JSON serialization (Project -> Manage NuGet Packages -> Add Newtonsoft.Json)
+using ConsoleTables; // needed for ConsoleTables (Project -> Manage NuGet Packages -> Add ConsoleTables)
 
 namespace CLO24_FirstTurnInNiklasH
 {
@@ -89,14 +90,19 @@ namespace CLO24_FirstTurnInNiklasH
         internal static void ListCD() // Method to list all CDs in the collection
         {
             Console.WriteLine("Current CD Collection:");
-            
+
+            // Here we are using ConsoleTables to print the collection in a nice table format
+            var table = new ConsoleTable("Title", "Artist", "Year", "Genre", "Quantity");
+
             // Sort the collection alphabetically by artist, then title, then by year
             var sortedCDs = cdCollection.OrderBy(cd => cd.Artist).ThenBy(cd => cd.Title).ThenBy(cd => cd.Year);
 
-            foreach (var cd in cdCollection) // Loop through the collection and print each CD
+            foreach (var cd in cdCollection) // Loop through the collection and add rows to the table
             {
-                Console.WriteLine($"Title: {cd.Title}, Artist: {cd.Artist}, Release year: {cd.Year}, Genre: {cd.Genre}, Quantities: {cd.Quantity}.");
+                table.AddRow(cd.Title, cd.Artist, cd.Year, cd.Genre, cd.Quantity);
             }
+
+            table.Write(Format.Default); // Print the table to the console (format is optional, we chose alternative)
         }
 
         internal static void AddCD() // Method to add a CD to the collection
