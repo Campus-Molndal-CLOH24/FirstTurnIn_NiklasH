@@ -13,7 +13,9 @@ The software needs to be able to do the following:
 Possible problem: How do we handle multiple copies of the same CD? (add "quantity" to the CD class?)  
 
 ## Classes and class-diagram:  
-Initial plan is to try to use the PlantUML extention in VS Code. Write the program in Visual Studio 2022, open the project folder in VS Code and then try to automaticly create the class diagram (and save as UML) via VSCode.  
+- Initial plan is to try to use the PlantUML extention in VS Code. Write the program in Visual Studio 2022, open the project folder in VS Code and then try to automaticly create the class diagram (and save as UML) via VSCode.  
+- Updated / Added:  
+- See attachments #1 and #2 at the end of this document  
   
 ## Concept / basic program layout:  
 a) Feature: A main menu where we have the following:  
@@ -53,9 +55,6 @@ This (having a bool setting for admin/guest control) entire concept has a few be
 - It needs no connection to a database or server, session control is a natural concept for databases but not here  
 - Scalable: We can add more tools for admins without cluttering ShopMenu() with guest options!  
   
-## Class-diagram
-- To be added!
-  
 # Development phase one / version history:  
 - Initial commit  
 - Created CollectionOfCDs + User classes  
@@ -85,7 +84,12 @@ This (having a bool setting for admin/guest control) entire concept has a few be
 - Created the ShopControl()-class and moved all control methods there  
 
 # Issues resolved  
--  One major issue I had before is that a file path might be correct (in the program folder) but the program will still not find it. This happened this time again, with cdcollection.json. The solution is reasonable easy, if you had experienced this before, but I had to ask ChatGPT for guidance the first time. This is the solution: rightclick the file you cannot find (cdcollection.json in this case). Chose properties. Then on Copy to Output directory, chose "Copy always"!  
+- One major issue I had before is that a file path might be correct (in the program folder) but the program will still not find it. This happened this time again, with cdcollection.json. The solution is reasonable easy, if you had experienced this before, but I had to ask ChatGPT for guidance the first time. This is the solution: rightclick the file you cannot find (cdcollection.json in this case). Chose properties. Then on Copy to Output directory, chose "Copy always"! 
+- Another major issue we had was that I could load the cdcollection.json file, we can add files while the console program runs but when the session (program) is shut down; the file only contains the original three files. Somehow it seems we can read, but not write, to it!  
+- Steps undertaken to check this: Added a try-catch with debug message showing that the file is saved. It prints those CWLines so this indicates the pathing for storing or writing rights might be faulty?  
+- One thought: We stored Artist + Title + Year when we add a CD, we do not store Quantity. This needs to be adjusted first. This was solved under AddCD() where we adjusted the cdCollection.Add- lines to end with Quantity = 1 (default value).   
+- Added a CWLine "File path used {filePath} to make sure the file is stored correctedly. It was not stored the same place it is being loaded from! It ends up in \bin\Debug\net8.0 in the project folder for some reason - supposedly this a common issue, VS and other IDEs point to the \bin folder for debugging purposes..  
+- Adjusted the executionassembly location (yes, extremely long shot solution!) but this way we can store and read from the same path.  
 
 # Development phase three / version history:
 - Intro: We have a working program now, so this phase is about tweaking, finding potential stack overflows, secure exception risks and simply to refine code
@@ -94,7 +98,8 @@ This (having a bool setting for admin/guest control) entire concept has a few be
 - Since we included the above, we also use .Where and that means we now return and print out ALL matching searches, not just the first hit. This resolves the potential problem if our search would match multiple items but only return the first.  
 - Adjusted the AddCD() method to check if CDs already exist in the collection, and if so, to adjust Quantity by +1 instead of adding another item. To do this, we used the FirstOrDefault search to return all CDs where Title, Artist and Year (if different releases!) would be the same.  
 - Adjusted the AddCD() method to loop back in case the user input is invalid. One do-while loop handles the three string inputs, then the int input is validated in a separated while-loop afterwards.  
-- Corrected three null reference warnings (CS8604) that arose when I adjusted the SearchCD method. I was using a null-conditional operator (single ?), but the solution was to adjust the code to a null-coalescing operator (double ??).  
+- Corrected three null reference warnings (CS8604) that arose when I adjusted the SearchCD method. I was using a null-conditional operator (single ?), but the solution was to adjust the code to a null-coalescing operator (double ??). 
+- Deployed a similar LINQ-function to the ListCD()-method as we had on SearchCD. Listing them alphabetically there as well.  
 - Completed the code for the release-version.  
   
 # Potential issues and solutions
@@ -116,6 +121,11 @@ Potential "future upgrades":
 - Class: User - add this and create user logins + a list to handle them. This is very, very, very far down the work list so it is considered a bonus or future update  
 - Bonus: Formatting the print/listed CD result so it looks more appealing to the eye. A lead would be this nu-get package: https://www.nuget.org/packages/ConsoleTables  
   
+## Attachments and references
+1) UML-class diagram below:  
   
+  
+
+2) Class diagram image below:  
   
    

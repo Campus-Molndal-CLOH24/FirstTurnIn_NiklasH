@@ -5,8 +5,11 @@ namespace CLO24_FirstTurnInNiklasH
     internal class CollectionOfCDs
     {
         private static List<CD> cdCollection = new List<CD>();
-        private static string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cdcollection.json");
+        // private static string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cdcollection.json");
         // Above: we use Path.Combine to create a file path that works on all systems, and we use AppDomain to get the base directory of the application
+        private static string filePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "cdcollection.json");
+        // We adjusted the previous path with this one, as the application tend to store the file in the wrong location. This path should work better.
+        // The difference between this and above: now we can use the same location as the program would use for Executable (.exe). That solved the problem.
 
         static CollectionOfCDs() // Constructor to load the CD collection from file
         {
@@ -28,11 +31,21 @@ namespace CLO24_FirstTurnInNiklasH
 
         private static void SaveCDCollection() // Method to save the CD collection to file, this is so we don't have to re-use code when adding/removing etc
         {
-            string json = JsonConvert.SerializeObject(cdCollection, Newtonsoft.Json.Formatting.Indented);
-            // Serialize the list of CDs into JSON and indent it for readability. Needed json-package from NuGet! See documentation.md
-            if (!string.IsNullOrEmpty(json))
+            try
             {
-                File.WriteAllText(filePath, json);
+                string json = JsonConvert.SerializeObject(cdCollection, Newtonsoft.Json.Formatting.Indented);
+                // Serialize the list of CDs into JSON and indent it for readability. Needed json-package from NuGet! See documentation.md
+                if (!string.IsNullOrEmpty(json))
+                {
+                    Console.WriteLine("Saving CD collection to file .. "); // Debug message we use as verification that the code takes us here
+                    File.WriteAllText(filePath, json);
+                    // Console.WriteLine("CD collection saved successfully."); // debug message used to verify as the file was saved/updated/written to
+                    // Console.WriteLine($"File path used: {filePath}"); // Used this file path for debugging - and found the file is stored in the wrong location!
+                }
+            }
+            catch (Exception exSave)
+            {
+                Console.WriteLine($"Error saving CD collection: {exSave.Message}"); // if it fails to save, catch prints what error we get
             }
         }
 
@@ -46,10 +59,10 @@ namespace CLO24_FirstTurnInNiklasH
                 var matchingCDs = cdCollection.Where(cd => // Use LINQ to filter the collection based on the search term
                 (cd.Title ?? "").ToLower().Contains(searchTerm) == true ||
                 (cd.Artist ?? "").ToLower().Contains(searchTerm) == true ||
-                (cd.Genre ?? "").ToLower().Contains(searchTerm) == true)
+                cd.Year.ToString().ToLower().Contains(searchTerm) == true)  // converting year to string so we can use ?? "" to avoid null reference exception
                 .OrderBy(cd => cd.Artist)
                 .ThenBy(cd => cd.Title)
-                .ThenBy(cd => cd.Genre); // Order the results by artist, then title, then genre
+                .ThenBy(cd => cd.Year); // Order the results by artist, then title, then year
 
                 // Important note regarding the code above: When we changed mechanics for the Search to LINQ,
                 // we also added .Where, which ensures that ALL matches are found, so we can print them all, not just the first one.
@@ -58,7 +71,7 @@ namespace CLO24_FirstTurnInNiklasH
                 {
                     foreach (var cd in matchingCDs) // Loop through the matching CDs and print them
                     {
-                        Console.WriteLine($"{cd.Title} by {cd.Artist}, in the {cd.Genre} released in {cd.Year}.");
+                        Console.WriteLine($"{cd.Title} by {cd.Artist}, in the genre {cd.Genre} released in {cd.Year}.");
                         Console.WriteLine($"We have {cd.Quantity} copies of that CD in the store right now.");
                     }
                 }
@@ -76,6 +89,10 @@ namespace CLO24_FirstTurnInNiklasH
         internal static void ListCD() // Method to list all CDs in the collection
         {
             Console.WriteLine("Current CD Collection:");
+            
+            // Sort the collection alphabetically by artist, then title, then by year
+            var sortedCDs = cdCollection.OrderBy(cd => cd.Artist).ThenBy(cd => cd.Title).ThenBy(cd => cd.Year);
+
             foreach (var cd in cdCollection) // Loop through the collection and print each CD
             {
                 Console.WriteLine($"Title: {cd.Title}, Artist: {cd.Artist}, Release year: {cd.Year}, Genre: {cd.Genre}, Quantities: {cd.Quantity}.");
@@ -125,8 +142,8 @@ namespace CLO24_FirstTurnInNiklasH
             }
             else
             {
-                // If it doesn't exist, we add the CD to the collection
-                cdCollection.Add(new CD { Title = title, Artist = artist, Genre = genre, Year = year });
+                // If it doesn't exist, we add the CD to the collection AND set a default quantity of 1! Important!
+                cdCollection.Add(new CD { Title = title, Artist = artist, Genre = genre, Year = year, Quantity = 1 });
                 Console.WriteLine("CD added successfully!");
             }
 
