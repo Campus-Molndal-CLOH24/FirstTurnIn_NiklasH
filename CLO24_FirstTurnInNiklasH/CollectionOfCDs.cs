@@ -8,7 +8,7 @@ namespace CLO24_FirstTurnInNiklasH
         private static List<CD> cdCollection = new List<CD>();
         // private static string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cdcollection.json");
         // Above: we use Path.Combine to create a file path that works on all systems, and we use AppDomain to get the base directory of the application
-        private static string filePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "cdcollection.json");
+        private static string filePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty, "cdcollection.json");
         // We adjusted the previous path with this one, as the application tend to store the file in the wrong location. This path should work better.
         // The difference between this and above: now we can use the same location as the program would use for Executable (.exe). That solved the problem.
 
