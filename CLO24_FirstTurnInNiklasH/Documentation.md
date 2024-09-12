@@ -2,13 +2,14 @@
 ## Student: Niklas Häll  
   
 ## Planning / concept:  
-We are creating a software tool to help administration a CD-enthusiast-shop.  
+We are creating a software tool to help administrating a CD-enthusiast-shop.  
 We have two employees with admin-rights and a guest-login for customers/enthusiasts.  
 The software needs to be able to do the following:  
 1) Add a CD  
 2) Remove a CD  
 3) Search for title and/or artist  
-Problem: How do we handle multiple copies of the same CD? (add "quantity" to the CD class?)  
+  
+Possible problem: How do we handle multiple copies of the same CD? (add "quantity" to the CD class?)  
 
 ## Classes and class-diagram:  
 Initial plan is to try to use the PlantUML extention in VS Code. Write the program in Visual Studio 2022, open the project folder in VS Code and then try to automaticly create the class diagram (and save as UML) via VSCode.  
@@ -18,17 +19,21 @@ a) A main menu where we have the following:
 - admin login (we will display a password so the tester can simulate admin tools)  
 - guest login (no pass required)  
 - End: go back to log-in-screen OR end program  
+  
 b) Classes:  
 -) Main  
 - contains menu (update: shortcuts to the control-class)  
+  
 c) CDcollection  
 - searchCD  
 - addCD  
 - removeCD 
 - CDhandling: Since we are not creating a real database, I will simulate this by using a List-function (as we will want to add/remove/etc). This is vital so we keep the information intact when the program is shut down!  
+  
 d) * User - scrapped! better to keep the tools within the CD-class  
 - admin (search, add, remove tools)  
 - guest (search tool only)  
+  
 e) ShopControl-class added later in the project
 - It made more sense and had better control to keep all tools for handling CD and the List in the CDcollection-class, so I moved out the shop control tools into its own class. This way we also keep Main clean from clutter.  
   
