@@ -1,4 +1,4 @@
-### Documentation for the first turn-in-assigmnet for CLO24  
+### Documentation for the first turn-in-assignment for CLO24  
 ## Student: Niklas Häll  
   
 ## Planning / concept:  
@@ -15,26 +15,25 @@ Possible problem: How do we handle multiple copies of the same CD? (add "quantit
 Initial plan is to try to use the PlantUML extention in VS Code. Write the program in Visual Studio 2022, open the project folder in VS Code and then try to automaticly create the class diagram (and save as UML) via VSCode.  
   
 ## Flowchart / basic program layout:  
-a) A main menu where we have the following:  
+a) Feature: A main menu where we have the following:  
 - admin login (we will display a password so the tester can simulate admin tools)  
 - guest login (no pass required)  
 - End: go back to log-in-screen OR end program  
   
-b) Classes:  
--) Main  
-- contains menu (update: shortcuts to the control-class)  
+b) Class: Main  
+- contains menu (update: shortcuts to the control-class instead, read section 'e')  
   
-c) CDcollection  
+c) Class: CDcollection  
 - searchCD  
 - addCD  
 - removeCD 
 - CDhandling: Since we are not creating a real database, I will simulate this by using a List-function (as we will want to add/remove/etc). This is vital so we keep the information intact when the program is shut down!  
   
-d) * User - scrapped! better to keep the tools within the CD-class  
+d) * Class: User - scrapped! better to keep the tools within the CD-class  
 - admin (search, add, remove tools)  
 - guest (search tool only)  
   
-e) ShopControl-class added later in the project
+e) Class: ShopControl-class added later in the project
 - It made more sense and had better control to keep all tools for handling CD and the List in the CDcollection-class, so I moved out the shop control tools into its own class. This way we also keep Main clean from clutter.  
   
   
