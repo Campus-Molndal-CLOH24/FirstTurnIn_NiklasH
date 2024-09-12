@@ -1,5 +1,6 @@
 ### Documentation for the first turn-in-assignment for CLO24  
 ## Student: Niklas Häll  
+# Please see the Readme.md file for licence agreement
   
 ## Planning / concept:  
 We are creating a software tool to help administrating a CD-enthusiast-shop.  
@@ -84,18 +85,32 @@ This (having a bool setting for admin/guest control) entire concept has a few be
 # Development phase three / version history:
 - Intro: We have a working program now, so this phase is about tweaking, finding potential stack overflows, secure exception risks and simply to refine code
 - Corrected nine (!) warnings of null value risks, this can be seen in SearchCD and RemoveCD()-methods in the if (searchTerm != null) checks  
+- Adjusted the SearchCD method to sort result alphabetically. Using LINQ and OrderBy()  
+- Since we included the above, we also use .Where and that means we now return and print out ALL matching searches, not just the first hit. This resolves the potential problem if our search would match multiple items but only return the first.  
+- Adjusted the AddCD() method to check if CDs already exist in the collection, and if so, to adjust Quantity by +1 instead of adding another item. To do this, we used the FirstOrDefault search to return all CDs where Title, Artist and Year (if different releases!) would be the same.  
+- Adjusted the AddCD() method to loop back in case the user input is invalid. One do-while loop handles the three string inputs, then the int input is validated in a separated while-loop afterwards.  
+- Corrected three null reference warnings (CS8604) that arose when I adjusted the SearchCD method. I was using a null-conditional operator (single ?), but the solution was to adjust the code to a null-coalescing operator (double ??).  
+- Completed the code for the release-version.  
   
-
+# Potential issues and solutions
+- When we search for existing CDs to match, we could have a potential problem since we do not search for Genre. This is a tough nut to crack as it has potential issues both ways:  
+- Genre is a subjective value, the user that puts in that value will set her or his own personal take on it. This could cause problem both when adding, or when searching, for items. There is multiple solutions for this:  
+- One would simply be to remove genre as a value  
+- Another would be to suggest genres and have a selected list that would be (hopefully) blantantly obvoious. I used this mechanic for a movie database I wrote, but then I had drop down menus and a SQL database, now we're working with a List and a console application.  
+- A third solution would be to try to add as many albums as we can, with genres preset, and set their quantity to "zero". This way we would just add albums to existing items.  
+- For now, all of this is put to the to-do list to be considered for the future  
+  
 # To Do:  
-- Intro: This list will contain additions I want to see to the program. Some might not make the cut before the release version, in that case they are considered "future upgrades".
-- Class-diagram! Added to this file! High prio.    
-- SearchCD() - sort the search result alphabetically
-- SearchCD() - what if our searchTerm return multiple items, say we search "net" and find both "interNET" and "kenNETh", we'd want to display all of the search hits then  
-- AddCD() - validation check if a CD already exists in the collection, if it does increase Quality +1 instead of adding a new CD (merge?)  
-- AddCD() - make sure we loop back to the start of the method if input is invalid  
+- Intro: This list will contain additions I want to see to the program. Some might not make the cut before the release version, in that case they are considered "future upgrades". Otherwise we just remove the items one by one from this list as they are added (or discarded as ideas) to the program.  
   
+- Class-diagram! Added to this file! High prio.    
+
+Potential "future upgrades":  
+- Consider changing .ToLower to better handle international characters  
+- Consider Genre and the various solutions.  
 - Class: User - add this and create user logins + a list to handle them. This is very, very, very far down the work list so it is considered a bonus or future update  
-- Bonus: Formatting the print/listed CD result so it looks more appealing to the eye  
+- Bonus: Formatting the print/listed CD result so it looks more appealing to the eye. A lead would be this nu-get package: https://www.nuget.org/packages/ConsoleTables  
+  
   
   
    

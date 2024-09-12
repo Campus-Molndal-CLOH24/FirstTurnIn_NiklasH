@@ -38,25 +38,38 @@ namespace CLO24_FirstTurnInNiklasH
 
         internal static void SearchCD() // Method to search for a CD in the collection
         {
-            // TO DO: IMPORTANT!
-            // MAKE SURE WE SORT THE SEARCH RESULT ALPHABETICALLY! (use OrderBy?)
-
             Console.WriteLine("\nEnter CD title, artist or genre to search:");
             string? searchTerm = Console.ReadLine()?.ToLower(); // Read the search term from the user and convert it to lowercase
 
-            foreach (var cd in cdCollection) // Loop through all CDs in the collection
+            if (!string.IsNullOrEmpty(searchTerm)) // Check if the search term is not null or empty
             {
-                if (searchTerm != null &&
-                    (cd.Title?.ToLower().Contains(searchTerm) == true ||
-                    cd.Artist?.ToLower().Contains(searchTerm) == true ||
-                    cd.Genre?.ToLower().Contains(searchTerm) == true))
-                // if searchTerm is met, print the CD
-                // Consider CompareString (separate method, neater and re-use of code) instead of ToLower (could be sensitive for some languages)
-                // TO DO: It could return more than one title, if our searchTerm for example is brief like "net" and we have "internet" and "Kenneth"! Fix!
+                var matchingCDs = cdCollection.Where(cd => // Use LINQ to filter the collection based on the search term
+                (cd.Title ?? "").ToLower().Contains(searchTerm) == true ||
+                (cd.Artist ?? "").ToLower().Contains(searchTerm) == true ||
+                (cd.Genre ?? "").ToLower().Contains(searchTerm) == true)
+                .OrderBy(cd => cd.Artist)
+                .ThenBy(cd => cd.Title)
+                .ThenBy(cd => cd.Genre); // Order the results by artist, then title, then genre
+
+                // Important note regarding the code above: When we changed mechanics for the Search to LINQ,
+                // we also added .Where, which ensures that ALL matches are found, so we can print them all, not just the first one.
+
+                if (matchingCDs.Any())
                 {
-                    Console.WriteLine($"{cd.Title} by {cd.Artist}, in the {cd.Genre} released in {cd.Year}.");
-                    Console.WriteLine($"We have {cd.Quantity} copies of that CD in the store right now.");
+                    foreach (var cd in matchingCDs) // Loop through the matching CDs and print them
+                    {
+                        Console.WriteLine($"{cd.Title} by {cd.Artist}, in the {cd.Genre} released in {cd.Year}.");
+                        Console.WriteLine($"We have {cd.Quantity} copies of that CD in the store right now.");
+                    }
                 }
+                else
+                {
+                    Console.WriteLine("No matching CDs found.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Search term cannot be empty");
             }
         }
 
@@ -71,40 +84,54 @@ namespace CLO24_FirstTurnInNiklasH
 
         internal static void AddCD() // Method to add a CD to the collection
         {
-            // TO DO: IMPORTANT!
-            // Add a check to see if the CD already exists in the collection, if it does, increase the quantity instead of adding a new CD
-            // Add a validation check to make sure the input is valid! (year, quantity etc)
+            string? title, artist, genre;
+            int year;
 
-            Console.WriteLine("Enter CD title:");
-            string? title = Console.ReadLine();
-
-            Console.WriteLine("Enter the artist:");
-            string? artist = Console.ReadLine();
-
-            Console.WriteLine("Enter the genre:");
-            string? genre = Console.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(artist) || string.IsNullOrWhiteSpace(genre))
+            do // Loop until we have valid input for title, artist, and genre
             {
-                Console.WriteLine("Invalid input. Please provide valid values for title, artist, and genre.");
-                return; // Exit method if any input is invalid
+                Console.WriteLine("Enter CD title:");
+                title = Console.ReadLine();
+
+                Console.WriteLine("Enter the artist:");
+                artist = Console.ReadLine();
+
+                Console.WriteLine("Enter the genre:");
+                genre = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(artist) || string.IsNullOrWhiteSpace(genre))
+                {
+                    Console.WriteLine("Invalid input. Please provide valid values for title, artist, and genre.");
+                    return; // Exit method if any input is invalid
+                }
+            }
+            while (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(artist) || string.IsNullOrWhiteSpace(genre));
+
+            while (true)
+            {
+                Console.WriteLine("Enter the release year:");
+                if (int.TryParse(Console.ReadLine(), out year))
+                    break; // Exit the loop if the input is a valid integer
             }
 
-            Console.WriteLine("Enter the release year:");
-            if (int.TryParse(Console.ReadLine(), out int year))
+            // Initially we want to check if the CD already exists in the collection, so we can increase the quantity instead of adding a new CD
+            // FirstOrDefault will return the first CD in the collection that matches the condition, or default (null) if no CD matches
+            var existingCD = cdCollection.FirstOrDefault(cd =>
+            cd.Title?.ToLower() == title.ToLower() && cd.Artist?.ToLower() == artist.ToLower());
+
+            if (existingCD != null) // If the CD already exists in the collection
             {
-                // We take the input from above, then add it to the cdCollection list, then use SaveCDCollection to save it to file
-                cdCollection.Add(new CD { Title = title, Artist = artist, Genre = genre, Year = year });
-                SaveCDCollection();
-                Console.WriteLine("CD added successfully!");
+                existingCD.Quantity += 1;  // Increase the quantity of the existing CD
+                Console.WriteLine("CD already existed in the collection, quantity increased.");
             }
             else
             {
-                Console.WriteLine("Invalid year entered.");
-                // TO DO: This needs to be expanded. We should probably loop back to the start of the method if the input is invalid.
+                // If it doesn't exist, we add the CD to the collection
+                cdCollection.Add(new CD { Title = title, Artist = artist, Genre = genre, Year = year });
+                Console.WriteLine("CD added successfully!");
             }
-        }
 
+            SaveCDCollection(); // Use the SaveCDCollection method to save the changes to file
+        }
         internal static void RemoveCD()
         {
             Console.WriteLine("Enter CD title or artist to remove:");
