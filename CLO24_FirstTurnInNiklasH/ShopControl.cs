@@ -81,28 +81,28 @@ namespace CLO24_FirstTurnInNiklasH
                     Console.WriteLine("5. Remove a CD");
                 }
 
-                string? menuInput = Console.ReadLine(); // Important! put this after the admin-only code, else we cannot take that input!
+                string? menuInput = Console.ReadLine();
 
                 if (int.TryParse(menuInput, out int menuChoice)) // Try parse the input to an int, output to menuChoice
                 {
                     switch (menuChoice) // switch-case is a very easy way of maintaining menu choices; if no case, it uses default!
                     {
                         case 1:
-                            CollectionOfCDs.SearchCD(); // Call search method
+                            CollectionOfCDs.SearchCD(); // Call Search method
                             break;
                         case 2:
-                            CollectionOfCDs.ListCD(); // Call list method
+                            CollectionOfCDs.ListCD(); // Call List method
                             break;
                         case 3:
                             ShopEnd(); // Call End method
                             break;
                         case 4 when adminRights:
                             // If the user is an admin, and the input is 4
-                            CollectionOfCDs.AddCD(); // Call add method
+                            CollectionOfCDs.AddCD(); // Call Add method
                             break;
                         case 5 when adminRights:
                             // If the user is an admin, and the input is 5
-                            CollectionOfCDs.RemoveCD(); // Call remove method
+                            CollectionOfCDs.RemoveCD(); // Call Remove method
                             break;
                         default:
                             Console.WriteLine("Invalid choice. Please try again.");
@@ -121,8 +121,8 @@ namespace CLO24_FirstTurnInNiklasH
             while (true)
             {
                 Console.WriteLine("\nAre you sure you want to log out?");
-                Console.WriteLine("1. = Log out");
-                Console.WriteLine("2. = Return to the login-menu");
+                Console.WriteLine("1. Log out");
+                Console.WriteLine("2. Return to the login-menu");
 
                 string? logoutInput = Console.ReadLine();
 
@@ -137,7 +137,7 @@ namespace CLO24_FirstTurnInNiklasH
                             Environment.Exit(0); // Shut down the program
                             break;
                         case 2: // If input was 2
-                            Console.WriteLine("\nHeading back to the login-menu. Press any key.");
+                            Console.WriteLine("\nHeading back to the login-menu. Press any key.\n");
                             Console.ReadKey();
                             ShopLogin();
                             return;

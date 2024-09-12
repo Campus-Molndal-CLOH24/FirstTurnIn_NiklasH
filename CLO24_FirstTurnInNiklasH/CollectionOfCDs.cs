@@ -7,7 +7,6 @@ namespace CLO24_FirstTurnInNiklasH
         private static List<CD> cdCollection = new List<CD>();
         private static string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cdcollection.json");
         // Above: we use Path.Combine to create a file path that works on all systems, and we use AppDomain to get the base directory of the application
-        // Console.WriteLine($"Looking for file at: {filePath}"); // Debugging code for file path, can be used to test if the file is found
 
         static CollectionOfCDs() // Constructor to load the CD collection from file
         {
@@ -53,7 +52,7 @@ namespace CLO24_FirstTurnInNiklasH
                     cd.Genre?.ToLower().Contains(searchTerm) == true))
                 // if searchTerm is met, print the CD
                 // Consider CompareString (separate method, neater and re-use of code) instead of ToLower (could be sensitive for some languages)
-                // TO DO: It could return more than one title, if our searchTerm for example is brief like "net" and we have "internet" and ".NET"! Fix!
+                // TO DO: It could return more than one title, if our searchTerm for example is brief like "net" and we have "internet" and "Kenneth"! Fix!
                 {
                     Console.WriteLine($"{cd.Title} by {cd.Artist}, in the {cd.Genre} released in {cd.Year}.");
                     Console.WriteLine($"We have {cd.Quantity} copies of that CD in the store right now.");
@@ -112,7 +111,7 @@ namespace CLO24_FirstTurnInNiklasH
             // We will only accept title or artist as input, as we don't want to remove multiple CDs at once. By default we remove the first CD found.
             string? searchTerm = Console.ReadLine()?.ToLower();
 
-            if (searchTerm != null)
+            if (searchTerm != null) // check to avoid null reference exception
             {
 
                 var cdToRemove = cdCollection.Find(cd =>
