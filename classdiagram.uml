@@ -1,0 +1,32 @@
+classDiagram
+    class Program {
+        +Main()
+    }
+
+    class ShopControl {
+        -ShopLogin()
+        -ShopMenu(adminRights: bool)
+        -ShopEnd()
+    }
+
+    class CollectionOfCDs {
+        -List~CD~ cdCollection
+        -LoadCDCollection()
+        -SaveCDCollection()
+        +SearchCD()
+        +ListCD()
+        +AddCD()
+        +RemoveCD()
+    }
+
+    class CD {
+        +string? Title
+        +string? Artist
+        +string? Genre
+        +int Year
+        +int Quantity
+    }
+
+    Program --> ShopControl : "calls"
+    ShopControl --> CollectionOfCDs : "uses"
+    CollectionOfCDs "1" --> "*" CD : "contains"
